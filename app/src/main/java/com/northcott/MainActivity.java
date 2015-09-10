@@ -1,11 +1,33 @@
 package com.northcott;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
+
+    public static final String ROW_MESSAGE = "com.northcott.GAME_ROW";
+    public static final String COL_MESSAGE = "com.northcott.GAME_COL";
+
+    /**
+     * Call play activity
+     * @param view view
+     */
+    public void goPlay(View view) {
+        Intent intent = new Intent(this, PlayActivity.class);
+        EditText rowCountEditText = (EditText) findViewById(R.id.row_count);
+        EditText colCountEditText = (EditText) findViewById(R.id.col_count);
+        Integer rowCount = Integer.parseInt(rowCountEditText.getText().toString());
+        Integer colCount = Integer.parseInt(colCountEditText.getText().toString());
+        intent.putExtra(ROW_MESSAGE, rowCount);
+        intent.putExtra(COL_MESSAGE, colCount);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,4 +56,5 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
