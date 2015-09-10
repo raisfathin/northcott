@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="default_row_count">4</string>
+    <string name="default_col_count">4</string>
 </resources>
