@@ -1,16 +1,27 @@
 package com.northcott;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class PlayActivity extends Activity {
 
+    private int rowCount;
+    private int colCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
+
+        Intent intent = getIntent();
+
+        int rowCount = intent.getIntExtra(MainActivity.ROW_MESSAGE);
+        int colCount = intent.getIntExtra(MainActivity.COL_MESSAGE);
+
+        System.out.println(rowCount);
+        System.out.println(colCount);
     }
 
     @Override
