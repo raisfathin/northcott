@@ -17,8 +17,8 @@ public class PlayActivity extends Activity {
 
         Intent intent = getIntent();
 
-        int rowCount = intent.getIntExtra(MainActivity.ROW_MESSAGE);
-        int colCount = intent.getIntExtra(MainActivity.COL_MESSAGE);
+        int rowCount = intent.getIntExtra(MainActivity.ROW_MESSAGE, 4);
+        int colCount = intent.getIntExtra(MainActivity.COL_MESSAGE, 4);
 
         System.out.println(rowCount);
         System.out.println(colCount);
