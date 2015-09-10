@@ -10,6 +10,20 @@
         android:layout_height="fill_parent"
         android:gravity="center">
 
+        <EditText
+            android:id="@+id/row_count"
+            android:hint="@string/default_row_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/col_count"
+            android:hint="@string/default_col_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
         <Button
             android:id="@+id/go_play"
             android:text="@string/play_button"
