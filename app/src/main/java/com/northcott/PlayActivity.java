@@ -75,12 +75,14 @@ public class PlayActivity extends Activity {
                                 v.setBackgroundColor(CHOSEN_COLOR);
                             }
                         } else {
-                            if (clickedRowIndex == clickRowIndex) {
-                                if (logic.move(playerTurn, clickRowIndex, clickColIndex)) {
-                                    showBoard();
-                                    playerTurn = 1 - playerTurn;
-                                    clickedRowIndex = clickedColIndex = -1;
-                                }
+                            if (clickedRowIndex == clickRowIndex
+                                    && logic.move(playerTurn, clickRowIndex, clickColIndex)) {
+                                showBoard();
+                                playerTurn = 1 - playerTurn;
+                                clickedRowIndex = clickedColIndex = -1;
+                            } else {
+                                clickedRowIndex = clickedColIndex = -1;
+                                showBoard();
                             }
                         }
                     }
