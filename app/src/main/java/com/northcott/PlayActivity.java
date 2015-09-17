@@ -1,14 +1,13 @@
 package com.northcott;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,20 +16,32 @@ public class PlayActivity extends Activity {
 
     private int rowCount;
     private int colCount;
+    private int clickedRowIndex;
+    private int clickedColIndex;
+    private int playerTurn;
 
     private final int MARGIN_TOP = 10;
     private final int MARGIN_LEFT = 10;
+    private final int FONT_SIZE = 70;
     private final int CELL_COLOR = 0xffffffff;
+    private final int CHOSEN_COLOR = 0xffff00ff;
+
+    private Logic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        clickedRowIndex = clickedColIndex = -1;
+        playerTurn = 0;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
         Intent intent = getIntent();
 
-        int rowCount = intent.getIntExtra(MainActivity.ROW_MESSAGE, 4);
-        int colCount = intent.getIntExtra(MainActivity.COL_MESSAGE, 4);
+        rowCount = intent.getIntExtra(MainActivity.ROW_MESSAGE, 4);
+        colCount = intent.getIntExtra(MainActivity.COL_MESSAGE, 4);
+
+        logic = new Logic(rowCount, colCount);
 
         TableLayout mainLayout = (TableLayout) findViewById(R.id.main_layout);
 
@@ -40,7 +51,6 @@ public class PlayActivity extends Activity {
             TextView[] tvs = new TextView[colCount];
             for (int j = 0; j < colCount; ++j) {
                 tvs[j] = new TextView(this);
-                tvs[j].setText("O");
                 row.addView(tvs[j]);
             }
             mainLayout.addView(row);
@@ -51,9 +61,54 @@ public class PlayActivity extends Activity {
                 params.setMargins(MARGIN_LEFT, 0, 0, 0);
                 tvs[j].setLayoutParams(params);
                 tvs[j].setBackgroundColor(CELL_COLOR);
+                tvs[j].setId(i * colCount + j);
+                tvs[j].setTextSize(FONT_SIZE);
+                tvs[j].setTypeface(Typeface.createFromAsset(getAssets(), "fonts/courier.ttf"));
+                tvs[j].setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        int clickRowIndex = v.getId() / colCount;
+                        int clickColIndex = v.getId() % colCount;
+                        if (clickedRowIndex == -1) {
+                            if (logic.getPosition()[playerTurn][clickRowIndex] == clickColIndex) {
+                                clickedRowIndex = clickRowIndex;
+                                clickedColIndex = clickColIndex;
+                                v.setBackgroundColor(CHOSEN_COLOR);
+                            }
+                        } else {
+                            if (clickedRowIndex == clickRowIndex) {
+                                if (logic.move(playerTurn, clickRowIndex, clickColIndex)) {
+                                    showBoard();
+                                    playerTurn = 1 - playerTurn;
+                                    clickedRowIndex = clickedColIndex = -1;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        showBoard();
+    }
+
+    protected void showBoard() {
+        for (int i = 0; i < rowCount; ++i) {
+            for (int j = 0; j < colCount; ++j) {
+                TextView toChange = (TextView) findViewById(i * colCount + j);
+                toChange.setText(".");
+                toChange.setBackgroundColor(CELL_COLOR);
+            }
+        }
+        int[][] position = logic.getPosition();
+        for (int player = 0; player < 2; ++player) {
+            for (int i = 0; i < rowCount; ++i) {
+                int column = position[player][i];
+                TextView toChange = (TextView) findViewById(i * colCount + column);
+                toChange.setText(player == 0 ? "O" : "X");
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
