@@ -80,6 +80,12 @@ public class PlayActivity extends Activity {
                                 showBoard();
                                 playerTurn = 1 - playerTurn;
                                 clickedRowIndex = clickedColIndex = -1;
+                            } else if (clickedRowIndex != clickRowIndex
+                                    && logic.getPosition()[playerTurn][clickRowIndex] == clickColIndex) {
+                                showBoard();
+                                clickedRowIndex = clickRowIndex;
+                                clickedColIndex = clickColIndex;
+                                v.setBackgroundColor(CHOSEN_COLOR);
                             } else {
                                 clickedRowIndex = clickedColIndex = -1;
                                 showBoard();
